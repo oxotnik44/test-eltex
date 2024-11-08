@@ -1,0 +1,103 @@
+<html lang="ru">
+  <body>
+    <h2>Тестовое задание</h2>
+    <label>Введите длину строки</label>
+    <input type="number" id="lenghtInput" min="1" placeholder="Введите число" />
+    <button onclick="generateRandomString()">Сгенерировать строку</button>
+    <p>Случайная строка: <span id="step1Result"></span></p>
+
+    <label>Введите символ для замены</label>
+    <input id="letterReplacement" placeholder="Введите символ" min="1" />
+    <button onclick="replaceLetters()">Заменить буквы</button>
+    <p>Строка после замены: <span id="step2Result"></span></p>
+
+    <label>Введите символ для замены</label>
+    <input id="numberReplacement" placeholder="Введите символ" min="1" />
+    <button onclick="replaceNumbers()">Заменить цифру</button>
+    <p>Строка после замены: <span id="step3Result"></span></p>
+
+    <p>Статистика:</p>
+    <ul>
+      <li>Количество заменённых букв: <span id="letterCount"></span></li>
+      <li>Количество заменённых цифр: <span id="numberCount"></span></li>
+      <li>
+        Количество неизменённых символов: <span id="unchangedCount"></span>
+      </li>
+    </ul>
+    <script>
+      let step1Result = document.getElementById("step1Result");
+      let step2Result = document.getElementById("step2Result");
+      let step3Result = document.getElementById("step3Result");
+      let letterCount = 0;
+      let numberCount = 0;
+      let unchangedCount = 0;
+
+      let originalString = "";
+      let originalStringStep2 = "";
+      let originalStringStep3 = "";
+
+      function generateRandomString() {
+        const length = parseInt(document.getElementById("lenghtInput").value);
+        const characters =
+          "abcdefghijklmnoqrtuvwxyzABDEFGHIJKLMNOQRTUVWYZ0123456789+-_$~";
+        originalString = "";
+        for (let i = 0; i < length; i++) {
+          const randomIndex = Math.floor(Math.random() * characters.length);
+          originalString += characters[randomIndex];
+        }
+        step1Result.textContent = originalString;
+      }
+
+      function replaceLetters() {
+        const replacementChar =
+          document.getElementById("letterReplacement").value;
+
+        originalStringStep2 = "";
+
+        for (let i = 0; i < originalString.length; i++) {
+          const char = originalString[i];
+
+          if ((char >= "a" && char <= "z") || (char >= "A" && char <= "Z")) {
+            originalStringStep2 += replacementChar;
+            letterCount++;
+          } else {
+            originalStringStep2 += char;
+          }
+        }
+
+        step2Result.textContent = originalStringStep2;
+      }
+
+      function replaceNumbers() {
+        const replaceChar = document.getElementById("numberReplacement").value;
+
+        originalStringStep3 = "";
+
+        for (let i = 0; i < originalStringStep2.length; i++) {
+          const char = originalStringStep2[i];
+
+          if (char >= "0" && char <= "9") {
+            originalStringStep3 += replaceChar;
+            numberCount++;
+          } else {
+            originalStringStep3 += char;
+          }
+        }
+        for (let i = 0; i < originalStringStep3.length; i++) {
+          if (
+            originalStringStep3[i] !==
+              document.getElementById("letterReplacement").value &&
+            originalStringStep3[i] !==
+              document.getElementById("numberReplacement").value
+          ) {
+            unchangedCount++;
+          }
+        }
+        step3Result.textContent = originalStringStep3;
+        document.getElementById("letterCount").textContent = letterCount;
+        document.getElementById("numberCount").textContent = numberCount;
+        document.getElementById("unchangedCount").textContent = unchangedCount;
+      }
+    </script>
+  </body>
+</html>
